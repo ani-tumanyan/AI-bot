@@ -11,7 +11,7 @@
    <br>`POST`
 
 * **URL Params**
-   <br>**Required:** `level=[int], word=[dictionary]`
+   <br>**Required:** `level=[int], words=[dictionary]`
 
 * **Success Response:**
     <br> **Code:** 200
@@ -46,7 +46,7 @@
    <br>`POST`
 
 * **URL Params**
-   <br>**Required:** `game=[game object], word=[dictionary]`
+   <br>**Required:** `game=[game object], words=[dictionary]`
 
 * **Success Response:**
     <br> **Code:** 200
