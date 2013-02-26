@@ -1,3 +1,38 @@
+MAIN FUNCTIONS
+------------------
+
+- Generate a new game
+  -URL 		/api/1/api-bots/generate_a_game
+  -Method	POST
+  -URL Params	level=[int]
+  -Response	{word: "some word", letters: [list of some letters]}
+
+  -Implementation
+    - Gets the length of the word that is suitable to the current user with "level" experience. Here we call "get_word_length" utility function.
+    - Gets a word from the dictionary that satisfies the required length. Here we call "get_word_by_length" utility function.
+    - (Optional) Makes sure that we haven't provided that word to the same user before.
+    - Now when we have the word for the user, we would also need to generate a list of letters for the game. This list will contain all the letters from the word + additional letters. We make a call to generate_letter_list utility function.
+    - Returns a JSON object, which includes the word and the list of letters!
+
+
+- Guess the word
+  -URL		/api/1/api-bots/guess_word
+  -Method	GET
+  -URL Params	level=[int], word=[string], letters=[list of letters]
+  -Response	["attemp1", "attemp2", …]
+
+  -Implementation
+     - Gets the number of mistaken attempt that the Robot should make before guessing the actual word. We call get_attempts_number utility function.
+     - Now we have some number of attempts that we want to generate before guessing the actual word. 
+         - If the number is 0, then we have an ACE, so we add the correct word to the final resulting list and return that array.
+         - If the number is greater than 0, then we would need to generate some words.
+
+     1. Generates a word from the letters list by calling generate_word utility function. We add this word to the final resulting list.
+     2. Checks the match between the actual and guess words by calling compare_words. If the "is_correct" is true, then we were lucky and we have guessed the word by chance. So we  return the list. Otherwise we go to step 1 passing the "result" string for the generate_word function. 
+     - We continue these steps "attempt_number" times. When we are done that much attempts, we add the correct word to the list and return that it.
+
+
+
 UTILITY FUNCTIONS
 --------------------
 
@@ -85,44 +120,6 @@ UTILITY FUNCTIONS
         - If the words don't match, then we compare the characters for the guess word and the correct word one by one. We keep the letters of the correct word in a separate array. We check to see if the first letters of correct and guessing words match. If they match, then we remove that letter from the list, add an element to our word_result array with the letter key and value "1". Otherwise we check to see if the letter from the guessing word contains in the letter array. If it contains then we again remove that letter from the list, then add an element to the word_result with "letter" : 2. Finally, if the array doesn't contain that letter, then we just add "letter" : 0 to the word_result array.
 
 The separate list of correct word letters is for avoiding repetitions and other problems, which can occur during comparison.
-
----------------------------------------------------------------------------------------
-
-MAIN FUNCTIONS
-------------------
-
-- Generate a new game
-  -URL 		/api/1/api-bots/generate_a_game
-  -Method	POST
-  -URL Params	level=[int]
-  -Response	{word: "some word", letters: [list of some letters]}
-
-  -Implementation
-    - Gets the length of the word that is suitable to the current user with "level" experience. Here we call "get_word_length" utility function.
-    - Gets a word from the dictionary that satisfies the required length. Here we call "get_word_by_length" utility function.
-    - (Optional) Makes sure that we haven't provided that word to the same user before.
-    - Now when we have the word for the user, we would also need to generate a list of letters for the game. This list will contain all the letters from the word + additional letters. We make a call to generate_letter_list utility function.
-    - Returns a JSON object, which includes the word and the list of letters!
-
-
-- Guess the word
-  -URL		/api/1/api-bots/guess_word
-  -Method	GET
-  -URL Params	level=[int], word=[string], letters=[list of letters]
-  -Response	["attemp1", "attemp2", …]
-
-  -Implementation
-     - Gets the number of mistaken attempt that the Robot should make before guessing the actual word. We call get_attempts_number utility function.
-     - Now we have some number of attempts that we want to generate before guessing the actual word. 
-         - If the number is 0, then we have an ACE, so we add the correct word to the final resulting list and return that array.
-         - If the number is greater than 0, then we would need to generate some words.
-
-     1. Generates a word from the letters list by calling generate_word utility function. We add this word to the final resulting list.
-     2. Checks the match between the actual and guess words by calling compare_words. If the "is_correct" is true, then we were lucky and we have guessed the word by chance. So we  return the list. Otherwise we go to step 1 passing the "result" string for the generate_word function. 
-     - We continue these steps "attempt_number" times. When we are done that much attempts, we add the correct word to the list and return that it.
-
-
-
 
 
 
