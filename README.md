@@ -78,7 +78,7 @@ _This function needs to be defined in the "Dictionary" class_<br>
 * **Generate Letter List<br>**
   * **URL:**		/api/1/api-bots/generate_letter_list<br>
   * **Method:**	        GET<br>
-  * **URL Params:**	existing_letters=[list of letters]<br>
+  * **URL Params:**	existing_letters=[list of letters], number_of_letters=[int]<br>
   * **Response:**	{letters: [complete list of letters]}<br><br>
 
   * **Implementation:**
